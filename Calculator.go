@@ -11,10 +11,7 @@ import (
 func main() {
 
 	var Calculator CalculationData = InputCalculation()
-	fmt.Println("first :", Calculator.firstNum)
-	fmt.Println("second :", Calculator.secondNum)
-	fmt.Println("operation :", Calculator.operation)
-	fmt.Println("RS :", Calculator.IsRomanSystem)
+	fmt.Println(Calculator.Example())
 }
 
 type CalculationData struct {
@@ -40,6 +37,9 @@ func InputCalculation() CalculationData {
 		cal.firstNum, _ = strconv.Atoi(strNumbers[0])
 		cal.secondNum, _ = strconv.Atoi(strNumbers[1])
 		cal.IsRomanSystem = false
+
+		CheckDiapazon(cal.firstNum)
+		CheckDiapazon(cal.secondNum)
 
 	} else if StringIsRoman(strNumbers[0]) && StringIsRoman(strNumbers[1]) {
 		cal.firstNum = RomeNumbers[strNumbers[0]]
@@ -107,4 +107,42 @@ var RomeNumbers = map[string]int{
 	"VIII": 8,
 	"IX":   9,
 	"X":    10,
+}
+
+func CheckDiapazon(num int) {
+	if num < 0 || num > 10 {
+		panic("Вводимые числа не должны быть больше 10")
+	}
+}
+
+func (cal CalculationData) Example() string {
+	var ex int
+
+	switch cal.operation {
+	case "+":
+		ex = cal.firstNum + cal.secondNum
+	case "-":
+		ex = cal.firstNum - cal.secondNum
+	case "*":
+		ex = cal.firstNum * cal.secondNum
+	case "/":
+		ex = cal.firstNum / cal.secondNum
+	}
+
+	if cal.IsRomanSystem {
+		if ex < 0 {
+			panic("В римской системе нет отрицательных чисел!")
+		}
+		return IntToRomanConv(ex)
+	} else {
+		return strconv.Itoa(ex)
+	}
+}
+
+func IntToRomanConv(num int) string {
+	var ones = [...]string{"", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"}
+	var tens = [...]string{"", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC"}
+	var hunds = [...]string{"", "C"}
+
+	return hunds[num/100] + tens[num/10%10] + ones[num%10]
 }
