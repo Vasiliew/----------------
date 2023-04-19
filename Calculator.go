@@ -46,7 +46,7 @@ func InputCalculation() CalculationData {
 		cal.secondNum = RomeNumbers[strNumbers[1]]
 		cal.IsRomanSystem = true
 	} else {
-		panic("Система счисления не определена!	")
+		panic("Система счисления не определена!")
 	}
 
 	return cal
